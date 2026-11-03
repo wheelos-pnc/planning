@@ -66,3 +66,11 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+bazel-*
+MODULE.bazel.lock
+__pycache__/
+*.pyc
+
+# Local machine map fixture
+/modules/map/data/sunnyvale_with_two_offices

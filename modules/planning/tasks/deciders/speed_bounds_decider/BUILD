@@ -1,0 +1,88 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "speed_bounds_decider",
+    srcs = ["speed_bounds_decider.cc"],
+    hdrs = ["speed_bounds_decider.h"],
+    copts = ["-DMODULE_NAME=\\\"planning\\\""],
+    deps = [
+        ":st_boundary_mapper",
+        "//modules/planning/common:frame",
+        "//modules/planning/common:planning_gflags",
+        "//modules/planning/common:st_graph_data",
+        "//modules/planning/common/util:common_lib",
+        "//modules/planning/tasks:task",
+        "//modules/planning/tasks/deciders:decider_base",
+        "//modules/planning/tasks/deciders/lane_change_decider",
+        "@wheelos_common//modules/common/status",
+    ],
+)
+
+cc_library(
+    name = "st_boundary_mapper",
+    srcs = [
+        "speed_limit_decider.cc",
+        "st_boundary_mapper.cc",
+    ],
+    hdrs = [
+        "speed_limit_decider.h",
+        "st_boundary_mapper.h",
+    ],
+    copts = ["-DMODULE_NAME=\\\"planning\\\""],
+    deps = [
+        "//modules/planning/common:dependency_injector",
+        "//modules/planning/common:frame",
+        "//modules/planning/common:obstacle",
+        "//modules/planning/common:path_decision",
+        "//modules/planning/common:planning_gflags",
+        "//modules/planning/common:speed_limit",
+        "//modules/planning/common/path:discretized_path",
+        "//modules/planning/common/path:frenet_frame_path",
+        "//modules/planning/common/path:path_data",
+        "//modules/planning/common/speed:st_boundary",
+        "//modules/planning/common/trajectory:discretized_trajectory",
+        "//modules/planning/proto:planning_config_cc_proto",
+        "//modules/planning/reference_line",
+        "@wheelos_common//modules/common/configs:vehicle_config_helper",
+        "@wheelos_common//modules/common/status",
+        "@wheelos_msgs//wheelos_msgs/basic_msgs:pnc_point_cc_proto",
+        "@wheelos_msgs//wheelos_msgs/config_msgs:vehicle_config_cc_proto",
+        "@wheelos_msgs//wheelos_msgs/planning_msgs:planning_cc_proto",
+        "//modules/map/pnc_map",
+    ],
+)
+
+cc_test(
+    name = "st_boundary_mapper_test",
+    size = "small",
+    srcs = ["st_boundary_mapper_test.cc"],
+    data = [
+        "//modules/planning:planning_testdata",
+    ],
+    deps = [
+        ":st_boundary_mapper",
+        "@com_google_googletest//:gtest_main",
+        "@core//cyber",
+        "@wheelos_common//modules/common/util",
+    ],
+)
+
+filegroup(
+    name = "exported_source_files",
+    srcs = glob(
+        ["**/*"],
+        allow_empty = True,
+    ),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "exported_source_headers",
+    srcs = glob(
+        ["**/*.h"],
+        allow_empty = True,
+    ),
+    visibility = ["//visibility:public"],
+)
