@@ -1,3 +1,4 @@
+load("@core//runtime:runtime.bzl", "runtime_module")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
@@ -632,18 +633,18 @@ pkg_filegroup(
 pkg_files(
     name = "pb_hdrs_data",
     srcs = [
-        "//modules/planning/proto:ipopt_return_status_py_pb2",
-        "//modules/planning/proto:lattice_structure_py_pb2",
-        "//modules/planning/proto:open_space_task_config_py_pb2",
-        "//modules/planning/proto:planner_open_space_config_py_pb2",
-        "//modules/planning/proto:planning_config_py_pb2",
-        "//modules/planning/proto:planning_stats_py_pb2",
-        "//modules/planning/proto:planning_status_py_pb2",
-        "//modules/planning/proto:reference_line_smoother_config_py_pb2",
-        "//modules/planning/proto:st_drivable_boundary_py_pb2",
-        "//modules/planning/proto:task_config_py_pb2",
-        "//modules/planning/proto:traffic_rule_config_py_pb2",
-        "//modules/planning/proto/math:fem_pos_deviation_smoother_config_py_pb2",
+        "//modules/planning/proto:ipopt_return_status_cc_proto",
+        "//modules/planning/proto:lattice_structure_cc_proto",
+        "//modules/planning/proto:open_space_task_config_cc_proto",
+        "//modules/planning/proto:planner_open_space_config_cc_proto",
+        "//modules/planning/proto:planning_config_cc_proto",
+        "//modules/planning/proto:planning_stats_cc_proto",
+        "//modules/planning/proto:planning_status_cc_proto",
+        "//modules/planning/proto:reference_line_smoother_config_cc_proto",
+        "//modules/planning/proto:st_drivable_boundary_cc_proto",
+        "//modules/planning/proto:task_config_cc_proto",
+        "//modules/planning/proto:traffic_rule_config_cc_proto",
+        "//modules/planning/proto/math:fem_pos_deviation_smoother_config_cc_proto",
     ],
     attributes = pkg_attributes(mode = "0644"),
     prefix = "planning/include",
@@ -653,4 +654,18 @@ pkg_files(
 pkg_filegroup(
     name = "pb_hdrs",
     srcs = [":pb_hdrs_data"],
+)
+
+runtime_module(
+    name = "module",
+    components = [":libplanning_component.so"],
+    files = {
+        "conf/discrete_points_smoother_config.pb.txt": "conf/planning/discrete_points_smoother_config.pb.txt",
+        "conf/planning_config.pb.txt": "conf/planning/planning_config.pb.txt",
+        "conf/traffic_rule_config.pb.txt": "conf/planning/traffic_rule_config.pb.txt",
+        "runtime/planning.conf": "conf/planning/planning.conf",
+        "runtime/planning.dag": "dag/planning/planning.dag",
+        "runtime/planning.launch": "launch/planning/planning.launch",
+    },
+    module_name = "planning",
 )

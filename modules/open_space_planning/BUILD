@@ -1,3 +1,4 @@
+load("@core//runtime:runtime.bzl", "runtime_module")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
@@ -74,4 +75,14 @@ pkg_install(
     name = "install_dir",
     srcs = [":package_files"],
     tags = ["manual"],
+)
+
+runtime_module(
+    name = "module",
+    components = [":libopen_space_planning_component.so"],
+    files = {
+        "//modules/open_space_planning/runtime:open_space_planning.dag": "dag/open_space_planning/open_space_planning.dag",
+        "//modules/open_space_planning/runtime:open_space_planning.launch": "launch/open_space_planning/open_space_planning.launch",
+    },
+    module_name = "open_space_planning",
 )

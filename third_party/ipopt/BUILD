@@ -6,10 +6,13 @@ licenses(["notice"])
 
 cc_library(
     name = "ipopt",
-    hdrs = glob([
-        "include/coin/**/*.hpp",
-        "include/coin/**/*.h",
-    ]),
+    hdrs = glob(
+        [
+            "include/coin/**/*.hpp",
+            "include/coin/**/*.h",
+        ],
+        allow_empty = True,
+    ),
     includes = ["include"],
     linkopts = [
         "-lipopt",

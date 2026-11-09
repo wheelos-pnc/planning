@@ -52,6 +52,7 @@ cc_test(
     ],
     linkstatic = True,
     tags = ["exclude"],
+    target_compatible_with = requires_cuda(),
     deps = [
         ":cuda_pnc_util",
         "@wheelos_common//modules/common/math",

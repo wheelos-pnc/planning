@@ -2,6 +2,11 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
+exports_files([
+    "open_space_planning.dag",
+    "open_space_planning.launch",
+])
+
 cc_library(
     name = "open_space_planner",
     srcs = ["open_space_planner.cc"],
